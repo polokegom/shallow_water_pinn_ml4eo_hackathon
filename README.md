@@ -3,5 +3,4 @@ This is a project build to create an ML PINN model for the ML4EO hackathon
 Using Pakistan flood data
 
 #  Competition details
-Link to data science competition:
 https://ml4earth23.devpost.com/?ref_feature=challenge&ref_medium=discover
