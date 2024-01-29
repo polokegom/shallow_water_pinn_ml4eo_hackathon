@@ -11,7 +11,7 @@ def shallow_water_equations(x, y, h, u, v):
     return [dh_dt, du_dt, dv_dt]
 
 
-# Define the geometry and boundary conditions
+# Defining the geom and boundary conditions
 def geometry(p):
     x, y = p
     return x, y
@@ -24,7 +24,7 @@ geom = dde.geometry.Geometry(geometry, train_domain=[(-1, 1), (-1, 1)])
 geom.update(func)
 
 
-# NN architecture
+# NN arch
 layer_size = [2] + [32] * 4 + [3]
 activation = "tanh"
 initializer = "Glorot uniform"
@@ -38,11 +38,9 @@ def neural_net(X, Y):
     return net
 
 
-# Define the DeepXDE model
 model = dde.Model(inputs=geom, outputs=neural_net(geom.x, geom.y))
 
-
-# loss function
+# loss func
 def custom_loss(derivatives):
     dh_dt, du_dt, dv_dt = derivatives
     return tf.reduce_mean(tf.square(dh_dt) + tf.square(du_dt) + tf.square(dv_dt))
@@ -51,7 +49,7 @@ model.compile("adam", lr=0.001)
 model.compile("adam", lr=0.001)
 
 
-# initial and boundary conditions
+# init and boundary conditions
 def initial_condition(p):
     x, y = p
     return [0.1 * np.exp(-10 * ((x - 0.5)**2 + (y - 0.5)**2)), 0, 0]
@@ -71,6 +69,5 @@ data = dde.data.PDE(
 )
 
 
-# Training
 losshistory, train_state = model.train(data, custom_loss, epochs=20000)
 dde.saveplot(losshistory, train_state, issave=True, isplot=True)
